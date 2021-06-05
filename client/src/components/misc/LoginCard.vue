@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <a href="https://www.youtube.com/watch?v=mNunrdp_epM" target="_blank"><img :src="image" alt=""/></a>
+    <a href="https://www.youtube.com/watch?v=mNunrdp_epM" target="_blank"><img :src="props.image" alt="" /></a>
     <div class="content">
       <form v-on:submit.prevent="!isLoading && !isFormValid ? login() : null">
         <div class="text">
@@ -15,44 +15,44 @@
           <!-- <p>Forgot your password? <router-link :to="{ name: 'forgot' }">Click here</router-link></p> -->
         </div>
 
-        <button type="submit" :class="{ disabled: isFormValid || isLoading }">Login <img v-if="isLoading" :src="require('@/assets/icons/loading.gif')" alt="" /></button>
+        <button type="submit" :class="{ disabled: isFormValid || isLoading }">
+          Login
+          <mdi:loading class="animate-spin" v-if="isLoading" />
+        </button>
       </form>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: "LoginCard",
-  data() {
-    return {
-      form: {
-        username: "",
-        password: ""
-      },
-      isLoading: false
-    };
-  },
-  computed: {
-    isFormValid: function() {
-      return Object.values(this.form).some(field => field == "");
-    }
-  },
-  props: {
-    image: { type: String, required: true }
-  },
-  methods: {
-    async login() {
-      this.isLoading = true;
-      try {
-        const status = await this.api.user.login(JSON.stringify(this.form));
-        if (status == 200) this.$router.push(`/dashboard/profile/${this.form.username}`);
-      } catch (error) {
-        console.log(error);
-      }
+<script lang="ts" setup>
+import { api } from "@/modules/api";
+import { computed, defineProps, reactive, ref } from "vue";
+import { useRouter } from "vue-router";
 
-      this.isLoading = false;
-    }
+const props =
+  defineProps<{
+    image: string;
+  }>();
+
+const router = useRouter();
+
+const form = reactive({
+  username: "",
+  password: "",
+});
+const isLoading = ref(false);
+
+const isFormValid = computed(() => Object.values(form).some((field) => field == ""));
+
+const login = async () => {
+  isLoading.value = true;
+  try {
+    const status = await api.user.login(JSON.stringify(form));
+    if (status == 200) router.push(`/dashboard/profile/${form.username}`);
+  } catch (error) {
+    console.log(error);
   }
+
+  isLoading.value = false;
 };
 </script>

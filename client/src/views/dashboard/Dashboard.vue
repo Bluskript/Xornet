@@ -9,33 +9,16 @@
   </div>
 </template>
 
-<script>
-import GaugeField from "@/components/dashboard/GaugeField";
-import InfoField from "@/components/dashboard/InfoField";
-import ServerList from "@/components/dashboard/ServerList";
-import LoadingScreen from "@/components/dashboard/LoadingScreen";
-import Chart from "@/components/dashboard/Chart";
-import Terminal from "@/components/dashboard/Terminal";
-import Header from "@/components/dashboard/Header";
-import Nav from "@/components/dashboard/Nav";
+<script lang="ts" setup>
+import LoadingScreen from "@/components/dashboard/LoadingScreen.vue";
+import Header from "@/components/dashboard/Header.vue";
+import Nav from "@/components/dashboard/Nav.vue";
+import { computed } from "vue";
 
-export default {
-  name: "Dashboard",
-  components: {
-    Nav,
-    Header,
-    LoadingScreen
-  },
-  computed: {
-    isLoading: function() {
-      // return this.machines.size > 0 ? false : true;
-      return false;
-    }
-  },
-  data: () => {
-    return {};
-  }
-};
+const isLoading = computed(() => {
+  // return this.machines.size > 0 ? false : true;
+  return false;
+});
 </script>
 
 <style scoped>

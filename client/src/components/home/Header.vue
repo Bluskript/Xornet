@@ -1,31 +1,43 @@
 <template>
-  <header :class="route == 'home' ? 'view-home' : 'view-login'">
+  <header :class="route.name === 'home' ? 'view-home' : 'view-login'">
     <router-link :to="{ name: 'home' }">
-      <img :src="route == 'home' ? require('@/assets/logos/logo.svg') : require('@/assets/logos/logo2.svg')" alt="Xornet" />
+      <img :src="route.name === 'home' ? logo : logo2" alt="Xornet" />
     </router-link>
     <div class="buttons">
-      <router-link class="button" :to="{ name: 'home', params: { page: 'about' } }"> <img :src="require('@/assets/icons/details.png')" alt="details" /> What is Xornet </router-link>
-      <a class="button" href="https://github.com/Geoxor/Xornet" target="_blank"> <img :src="require('@/assets/icons/repository.png')" alt="repository" /> Repository </a>
-      <router-link class="button" :to="{ name: 'home', params: { page: 'downloads' } }"> <img :src="require('@/assets/icons/downloads.png')" alt="downloads" /> Downloads </router-link>
-      <router-link class="button" v-if="isLoggedIn" :to="{ name: 'machines' }"> <img :src="require('@/assets/icons/dash.png')" alt="dash" /> Dashboard </router-link>
-      <router-link class="button" v-if="!isLoggedIn" :to="{ name: 'login' }"> <img :src="require('@/assets/icons/login.png')" alt="login" /> Login </router-link>
+      <router-link class="button" :to="{ name: 'home', params: { page: 'about' } }">
+        <bi:question-circle alt="details" />
+        What is Xornet
+      </router-link>
+      <a class="button" href="https://github.com/Geoxor/Xornet" target="_blank">
+        <octicon:repo alt="repo" />
+        Repository
+      </a>
+      <router-link class="button" :to="{ name: 'home', params: { page: 'downloads' } }">
+        <ic:round-download-for-offline alt="download" />
+        Downloads
+      </router-link>
+      <router-link class="button" v-if="isLoggedIn" :to="{ name: 'machines' }">
+        <img :src="dash" alt="dash" />
+        Dashboard
+      </router-link>
+      <router-link class="button" v-if="!isLoggedIn" :to="{ name: 'login' }">
+        <ant-design:login-outlined alt="login" />
+        Login
+      </router-link>
     </div>
   </header>
 </template>
 
-<script>
-export default {
-  name: "Header",
-  components: {},
-  computed: {
-    isLoggedIn: function() {
-      return localStorage.getItem("token") == null ? false : true;
-    },
-    route: function() {
-      return this.$route.name;
-    }
-  }
-};
+<script lang="ts" setup>
+import { token } from "@/services/localStorage";
+import { computed } from "vue";
+import { useRoute } from "vue-router";
+import dash from "@/assets/icons/dash.png";
+import logo from "@/assets/logos/logo.svg";
+import logo2 from "@/assets/logos/logo2.svg";
+
+const route = useRoute();
+const isLoggedIn = computed(() => token === null);
 </script>
 
 <style scoped>

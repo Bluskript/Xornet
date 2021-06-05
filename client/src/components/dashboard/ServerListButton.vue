@@ -1,9 +1,9 @@
 <template>
   <router-link :to="{ name: 'machines', params: { machine: machine.uuid } }" class="button" :class="{ thin: thin, rogue: machine.rogue, disconnected: Date.now() > machine.timestamp + 15000 }">
     <!-- Icons Column -->
-    <img v-if="!machine.rogue && Date.now() < machine.timestamp + 15000" class="machineType" :src="require(`@/assets/icons/${type}.png`)" alt="" />
-    <img v-if="machine.rogue && Date.now() < machine.timestamp + 15000" class="machineType" :src="require(`@/assets/icons/warning.png`)" alt="" />
-    <img v-if="Date.now() > machine.timestamp + 15000" class="machineType" :src="require(`@/assets/icons/disconnected.png`)" alt="" />
+    <img v-if="!machine.rogue && Date.now() < machine.timestamp + 15000" class="machineType" :src="import(`@/assets/icons/${type}.png`)" alt="" />
+    <img v-if="machine.rogue && Date.now() < machine.timestamp + 15000" class="machineType" :src="import(`@/assets/icons/warning.png`)" alt="" />
+    <img v-if="Date.now() > machine.timestamp + 15000" class="machineType" :src="import(`@/assets/icons/disconnected.png`)" alt="" />
 
     <!-- UUID Column -->
     <div class="info">
@@ -17,8 +17,8 @@
     <div class="field cpuUsage" v-if="machine.cpu != null">{{ machine.cpu }}<strong>%</strong></div>
 
     <!-- RAM Column -->
-    <div class="field ramUsage" v-if="Object.values(machine.ram).some(field => field != null)">{{ machine.ram.used }}/{{ machine.ram.total > 1 ? Math.ceil(machine.ram.total) : machine.ram.total }}<strong>GB</strong></div>
-    <div class="field ramUsage" v-if="Object.values(machine.ram).some(field => field == null)"><strong>Unknown</strong></div>
+    <div class="field ramUsage" v-if="Object.values(machine.ram).some((field) => field != null)">{{ machine.ram.used }}/{{ machine.ram.total > 1 ? Math.ceil(machine.ram.total) : machine.ram.total }}<strong>GB</strong></div>
+    <div class="field ramUsage" v-if="Object.values(machine.ram).some((field) => field == null)"><strong>Unknown</strong></div>
 
     <!-- Disks Column -->
     <div class="field diskUsage">
@@ -38,7 +38,7 @@
     <div class="field networkUsage">{{ machine.network?.RxSec }}<strong>mbps</strong></div>
 
     <!-- Region Column -->
-    <div class="field region"><img :src="machine.geolocation?.countryCode ? require(`@/assets/flags/${machine.geolocation.countryCode}.png`) : require('@/assets/flags/__.png')" alt="Country Flag" /></div>
+    <div class="field region"><img :src="machine.geolocation?.countryCode ? import(`@/assets/flags/${machine.geolocation.countryCode}.png`) : import('@/assets/flags/__.png')" alt="Country Flag" /></div>
 
     <!-- Ping Column -->
     <div class="field ping" v-if="machine.ping != null">{{ machine.ping }}<strong>ms</strong></div>
@@ -52,14 +52,14 @@
 
     <!-- Platform Column -->
     <div class="platform">
-      <img v-if="machine.platform == 'win32'" :src="require('@/assets/icons/windows-black.png')" alt="" />
-      <img v-if="machine.platform == 'darwin'" :src="require('@/assets/icons/macos-black.png')" alt="" />
-      <img v-if="machine.platform == 'linux'" :src="require('@/assets/icons/linux-black.png')" alt="" />
-      <!-- <img v-if="machine.static.system.manufacturer.startsWith('Raspberry Pi')" :src="require('@/assets/icons/raspberry.png')" alt="">
-            <img v-if="machine.static.system.manufacturer.startsWith('Dell')" style="height: 10px" :src="require('@/assets/icons/dell.png')" alt="">
-            <img v-if="machine.static.system.manufacturer.startsWith('Hewlett-Packard')" :src="require('@/assets/icons/hp.png')" alt="">
-            <img v-if="machine.static.system.manufacturer.startsWith('Gigabyte')" style="height: 7px" :src="require('@/assets/icons/gigabyte.png')" alt="">
-            <img v-if="machine.static.system.manufacturer.startsWith('Asus')" style="height: 7px" :src="require('@/assets/icons/asus.png')" alt=""> -->
+      <img v-if="machine.platform == 'win32'" :src="import('@/assets/icons/windows-black.png')" alt="" />
+      <img v-if="machine.platform == 'darwin'" :src="import('@/assets/icons/macos-black.png')" alt="" />
+      <img v-if="machine.platform == 'linux'" :src="import('@/assets/icons/linux-black.png')" alt="" />
+      <!-- <img v-if="machine.static.system.manufacturer.startsWith('Raspberry Pi')" :src="import('@/assets/icons/raspberry.png')" alt="">
+            <img v-if="machine.static.system.manufacturer.startsWith('Dell')" style="height: 10px" :src="import('@/assets/icons/dell.png')" alt="">
+            <img v-if="machine.static.system.manufacturer.startsWith('Hewlett-Packard')" :src="import('@/assets/icons/hp.png')" alt="">
+            <img v-if="machine.static.system.manufacturer.startsWith('Gigabyte')" style="height: 7px" :src="import('@/assets/icons/gigabyte.png')" alt="">
+            <img v-if="machine.static.system.manufacturer.startsWith('Asus')" style="height: 7px" :src="import('@/assets/icons/asus.png')" alt=""> -->
       <h1 v-if="machine.reporterVersion">v{{ machine.reporterVersion }}</h1>
     </div>
   </router-link>
@@ -69,15 +69,15 @@
 export default {
   name: "ServerListButton",
   computed: {
-    type: function() {
+    type: function () {
       return this.machine.isVirtual ? "vm" : "pm";
-    }
+    },
   },
   props: {
     machine: { type: Object, required: true },
     showDetails: { type: Boolean, required: true },
-    thin: { type: Boolean, required: false, default: false }
-  }
+    thin: { type: Boolean, required: false, default: false },
+  },
 };
 </script>
 

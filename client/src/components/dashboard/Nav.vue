@@ -2,40 +2,26 @@
   <nav>
     <div class="buttons">
       <router-link :to="{ name: 'profile', params: { username } }" class="button">
-        <img :src="require('@/assets/icons/user.png')" alt="" />
+        <mdi:account />
       </router-link>
       <router-link :to="{ name: 'summary' }" class="button">
-        <img :src="require('@/assets/icons/dash.png')" alt="" />
+        <codicon:dashboard />
       </router-link>
       <router-link :to="{ name: 'machines' }" class="button">
-        <img :src="require('@/assets/icons/stack.png')" alt="" />
+        <zondicons:servers />
       </router-link>
       <router-link :to="{ name: 'network' }" class="button">
-        <img :src="require('@/assets/icons/network.png')" alt="" />
+        <carbon:network-4 />
       </router-link>
       <router-link :to="{ name: 'logs' }" class="button">
-        <img :src="require('@/assets/icons/clipboard.png')" alt="" />
+        <mdi:clipboard />
       </router-link>
     </div>
   </nav>
 </template>
 
-<script>
-export default {
-  name: "Nav",
-  components: {},
-  computed: {
-    username: function() {
-      return localStorage.getItem("username");
-    }
-  },
-  data: () => {
-    return {};
-  },
-  created() {},
-  mounted() {},
-  methods: {}
-};
+<script lang="ts" setup>
+import { username } from "@/services/localStorage";
 </script>
 
 <style scoped>

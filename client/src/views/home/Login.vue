@@ -7,17 +7,9 @@
   </div>
 </template>
 
-<script>
-import Header from "@/components/home/Header";
-import LoginCard from "@/components/misc/LoginCard";
-
-export default {
-  name: "Login",
-  components: {
-    LoginCard,
-    Header
-  }
-};
+<script lang="ts" setup>
+import Header from "@/components/home/Header.vue";
+import LoginCard from "@/components/misc/LoginCard.vue";
 </script>
 
 <style>

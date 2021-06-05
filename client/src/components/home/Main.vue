@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <img :src="require('@/assets/logos/logoColored.svg')" alt="Xornet" />
+    <img :src="logoColored" alt="Xornet" />
 
     <div class="textFields">
       <section>
@@ -47,29 +47,23 @@
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
 import axios from "axios";
+import { onMounted, ref } from "vue";
+import logoColored from "@/assets/logos/logoColored.svg";
 
-export default {
-  name: "main",
-  data: () => {
-    return {
-      totalMachines: null,
-      totalTraffic: null,
-      totalCores: null,
-      totalRam: null
-    };
-  },
-  async mounted() {
-    const response = await axios.get("https:///backend.xornet.cloud/stats");
-    if (response.status == 200) {
-      this.totalMachines = response.data.totalMachines;
-      this.totalTraffic = response.data.totalTraffic;
-      this.totalCores = response.data.totalCores;
-      this.totalRam = response.data.totalRam;
-    }
-  }
-};
+const totalMachines = ref(null);
+const totalTraffic = ref(null);
+const totalCores = ref(null);
+const totalRam = ref(null);
+
+onMounted(async () => {
+  const response = await axios.get("https:///backend.xornet.cloud/stats");
+  totalMachines.value = response.data.totalMachines;
+  totalTraffic.value = response.data.totalTraffic;
+  totalCores.value = response.data.totalCores;
+  totalRam.value = response.data.totalRam;
+});
 </script>
 
 <style scoped>

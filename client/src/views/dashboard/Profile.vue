@@ -3,17 +3,17 @@
     <div class="heading">
       <img class="profileBanner" @click="$refs.profileBanner.click()" :src="profile.profileBanner?.url || 'https://cdn.discordapp.com/attachments/806300597338767450/849668963033153606/Normal.gif'" :alt="profile.username" />
       <div class="profileImage" @click="$refs.profileImage.click()" :class="{ border: profile.profileImage?.hasAlpha }" :style="{ 'background-image': `url(${profile.profileImage?.url ?? 'https://wallpapercave.com/wp/wp8846945.jpg'})` }">
-        <div class="xornetBadge" v-if="profile.isDev"><img :src="require('@/assets/logos/logo.svg')" alt="Xornet Developer" /></div>
+        <div class="xornetBadge" v-if="profile.isDev"><img :src="import('@/assets/logos/logo.svg')" alt="Xornet Developer" /></div>
       </div>
 
       <form v-if="isEditing">
-        <input type="file" id="profileImage" ref="profileImage" style="display: none;" name="profileImage" accept="image/*" />
-        <input type="file" id="profileBanner" ref="profileBanner" style="display: none;" name="profileBanner" accept="image/*" />
+        <input type="file" id="profileImage" ref="profileImage" style="display: none" name="profileImage" accept="image/*" />
+        <input type="file" id="profileBanner" ref="profileBanner" style="display: none" name="profileBanner" accept="image/*" />
       </form>
 
       <section v-if="!isEditing && profile.username == username" @click="isEditing = !isEditing" class="shadowButton edit">
         <h1>Edit</h1>
-        <img :src="require(`@/assets/icons/edit.png`)" />
+        <img :src="import(`@/assets/icons/edit.png`)" />
       </section>
 
       <section
@@ -25,7 +25,7 @@
         class="shadowButton edit"
       >
         <h1>Save</h1>
-        <img :src="require(`@/assets/icons/save.png`)" />
+        <img :src="import(`@/assets/icons/save.png`)" />
       </section>
     </div>
     <SocialCard :add="add" v-if="isAddingSocial && isEditing" />
@@ -34,22 +34,22 @@
       <div class="details" :class="{ editing: isEditing }">
         <div class="heading">
           <!-- make this change to the user's selected badge -->
-          <img v-if="profile.badges?.owned[profile.badges.selected]" :src="require(`@/assets/badges/${profile.badges?.owned[profile.badges.selected]}.svg`)" />
+          <img v-if="profile.badges?.owned[profile.badges.selected]" :src="import(`@/assets/badges/${profile.badges?.owned[profile.badges.selected]}.svg`)" />
 
           <div class="container">
             <h1 class="username">{{ profile.username }}</h1>
-            <img class="location" :src="profile.geolocation?.countryCode ? require(`@/assets/flags/${profile.geolocation.countryCode}.png`) : require('@/assets/flags/__.png')" alt="Country Flag" />
+            <img class="location" :src="profile.geolocation?.countryCode ? import(`@/assets/flags/${profile.geolocation.countryCode}.png`) : import('@/assets/flags/__.png')" alt="Country Flag" />
           </div>
         </div>
 
         <section class="shadowButton uuid" :class="{ didCopy: didCopy }" @click="copyUUID">
           <h1 id="profileID">{{ copyMessage || profile._id }}</h1>
-          <img :src="require(`@/assets/icons/clipboard.png`)" />
+          <img :src="import(`@/assets/icons/clipboard.png`)" />
         </section>
 
         <section>
           <h1 class="descriptionHeading">Points</h1>
-          <p class="points" @mouseenter="showFullPoints = true" @mouseleave="showFullPoints = false" >{{ showFullPoints ? Math.floor(points.tweened) :  millify(points.number) || "0" }}</p>
+          <p class="points" @mouseenter="showFullPoints = true" @mouseleave="showFullPoints = false">{{ showFullPoints ? Math.floor(points.tweened) : millify(points.number) || "0" }}</p>
         </section>
 
         <div class="line"></div>
@@ -58,9 +58,9 @@
           <h1 class="descriptionHeading">Badges</h1>
 
           <div class="badges">
-            <img class="badge" v-if="profile.badges?.owned?.includes('developer')" :src="require(`@/assets/badges/developer.svg`)" />
-            <img class="badge" v-if="profile.badges?.owned?.includes('designer')" :src="require(`@/assets/badges/designer.svg`)" />
-            <img class="badge" v-if="profile.badges?.owned?.includes('contributor')" :src="require(`@/assets/badges/contributor.svg`)" />
+            <img class="badge" v-if="profile.badges?.owned?.includes('developer')" :src="import(`@/assets/badges/developer.svg`)" />
+            <img class="badge" v-if="profile.badges?.owned?.includes('designer')" :src="import(`@/assets/badges/designer.svg`)" />
+            <img class="badge" v-if="profile.badges?.owned?.includes('contributor')" :src="import(`@/assets/badges/contributor.svg`)" />
           </div>
 
           <div class="line"></div>
@@ -87,13 +87,13 @@
           <div v-for="(platform, index) of profile.socials" :key="platform" @click="isEditing ? remove(index) : open(platform.url)" class="shadowButton" :class="{ isEditing: isEditing }">
             <h1 v-if="platforms.includes(platform.name)" class="nameOnPlatform">@{{ platform.url.split("/")[platform.url.split("/").length - 1] }}</h1>
             <h1 v-if="!platforms.includes(platform.name)" class="nameOnPlatform">{{ platform.name }}</h1>
-            <img :src="platform.name != null && platforms.includes(platform.name) ? require(`@/assets/icons/${platform.name}.png`) : require(`@/assets/icons/globe.png`)" />
-            <img v-if="isEditing" :src="require(`@/assets/icons/x.png`)" />
+            <img :src="platform.name != null && platforms.includes(platform.name) ? import(`@/assets/icons/${platform.name}.png`) : import(`@/assets/icons/globe.png`)" />
+            <img v-if="isEditing" :src="import(`@/assets/icons/x.png`)" />
           </div>
 
           <div class="shadowButton" @click="isAddingSocial = !isAddingSocial" v-if="isEditing" :class="{ isEditing: isEditing }">
             <h1 class="nameOnPlatform">Add</h1>
-            <img :src="require(`@/assets/icons/add.png`)" />
+            <img :src="import(`@/assets/icons/add.png`)" />
           </div>
         </section>
 
@@ -108,37 +108,39 @@
 
       <div class="stats">
         <div class="speedtest" v-if="profile.speedtest">
-          <h1>Internet Speedtest <strong>{{new Date(Date.now() - new Date(profile.speedtest.timestamp).valueOf()).getMinutes()}}m ago</strong></h1>
+          <h1>
+            Internet Speedtest <strong>{{ new Date(Date.now() - new Date(profile.speedtest.timestamp).valueOf()).getMinutes() }}m ago</strong>
+          </h1>
           <div class="gauges">
-            <Gauge :icon="require('@/assets/icons/download.png')" suffix="mbps" :value="parseFloat((profile.speedtest.download.bandwidth / 100000).toFixed(2))" color="#000"/>
-            <Gauge :icon="require('@/assets/icons/upload.png')" suffix="mbps" :value="parseFloat((profile.speedtest.upload.bandwidth / 100000).toFixed(2))" color="#000"/>
+            <Gauge :icon="import('@/assets/icons/download.png')" suffix="mbps" :value="parseFloat((profile.speedtest.download.bandwidth / 100000).toFixed(2))" color="#000" />
+            <Gauge :icon="import('@/assets/icons/upload.png')" suffix="mbps" :value="parseFloat((profile.speedtest.upload.bandwidth / 100000).toFixed(2))" color="#000" />
           </div>
         </div>
 
-        <InfoField :icon="require('@/assets/icons/stack.png')" title="Total servers" :value="(profile.machines).length"/>
-        <InfoField :icon="require('@/assets/icons/ram.png')" title="Total ram" :value="`${Math.ceil(profile.totalRam / 1000 / 1000 / 1000)}GB`"/>
-        <InfoField :icon="require('@/assets/icons/cpu.png')" title="Total shared cores" :value="(profile.totalCores)"/>
-
+        <InfoField :icon="import('@/assets/icons/stack.png')" title="Total servers" :value="profile.machines.length" />
+        <InfoField :icon="import('@/assets/icons/ram.png')" title="Total ram" :value="`${Math.ceil(profile.totalRam / 1000 / 1000 / 1000)}GB`" />
+        <InfoField :icon="import('@/assets/icons/cpu.png')" title="Total shared cores" :value="profile.totalCores" />
       </div>
     </div>
-
   </div>
 </template>
 
 <script>
-import SocialCard from "@/components/misc/SocialCard";
+import SocialCard from "@/components/misc/SocialCard.vue";
 import gsap from "gsap";
 import socket from "@/services/socket.js";
-import Gauge from "@/components/dashboard/Gauge";
-import InfoField from "@/components/dashboard/InfoField";
-import {millify} from "millify";
+import Gauge from "@/components/dashboard/Gauge.vue";
+import InfoField from "@/components/dashboard/InfoField.vue";
+import { millify } from "millify";
+import { api } from "@/modules/api";
+import { username } from "@/services/localStorage";
 
 export default {
   name: "Profile",
   components: {
     SocialCard,
     InfoField,
-    Gauge
+    Gauge,
   },
   data: () => {
     return {
@@ -155,19 +157,14 @@ export default {
       isAddingSocial: false,
     };
   },
-  computed: {
-    username: function() {
-      return localStorage.getItem("username");
-    }
-  },
   async created() {
-    this.profile = await this.api.user.fetchProfile(this.$route.params.username);
+    this.profile = await api.user.fetchProfile(this.$route.params.username);
     this.points.number = this.profile.points;
     this.points.tweened = this.profile.points;
   },
-  mounted(){
-    socket.emit('getPoints', this.$route.params.username);
-    socket.on('points', points => {
+  mounted() {
+    socket.emit("getPoints", this.$route.params.username);
+    socket.on("points", (points) => {
       this.points.number = points;
       gsap.to(this.points, { duration: 1, tweened: points });
     });
@@ -178,7 +175,6 @@ export default {
       this.profile.socials.splice(index, 1);
     },
     add(url) {
-
       let name = extractHostname(url);
 
       function extractHostname(url) {
@@ -199,7 +195,7 @@ export default {
         return hostname;
       }
 
-      if (url.endsWith('/')) url = url.substring(0, url.length - 1);
+      if (url.endsWith("/")) url = url.substring(0, url.length - 1);
 
       if (url.includes("youtube")) name = "youtube";
       if (url.includes("twitch")) name = "twitch";
@@ -216,7 +212,7 @@ export default {
 
       url = {
         name,
-        url
+        url,
       };
 
       this.profile.socials.push(url);
@@ -225,8 +221,8 @@ export default {
       window.open(url, "_blank");
     },
     async save() {
-      let response = await this.api.user.save(Object.assign({}, this.profile), this.$refs.profileImage.files[0], this.$refs.profileBanner.files[0]);
-      
+      let response = await api.user.save(Object.assign({}, this.profile), this.$refs.profileImage.files[0], this.$refs.profileBanner.files[0]);
+
       // this.profile.profileImage = response.profile.profileImage;
       for (const [key, value] of Object.entries(response.profile)) {
         this.profile[key] = value;
@@ -252,16 +248,16 @@ export default {
       } catch {
         console.log("Oops, unable to copy");
       }
-    }
+    },
   },
   watch: {
     async $route(to, from) {
-      if(to.name == from.name) {
-        socket.emit('getPoints', this.$route.params.username);
-        this.profile = await this.api.user.fetchProfile(this.$route.params.username);
+      if (to.name == from.name) {
+        socket.emit("getPoints", this.$route.params.username);
+        this.profile = await api.user.fetchProfile(this.$route.params.username);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -347,7 +343,7 @@ export default {
   width: 100%;
   padding: 16px 16px 20px 16px;
   border-radius: 8px;
-  border: 1px solid #E7E7E7;
+  border: 1px solid #e7e7e7;
   display: flex;
   cursor: pointer;
   transition: 100ms ease;
@@ -362,7 +358,7 @@ export default {
 }
 
 .speedtest h1 {
-  font-family: 'Roboto Mono';
+  font-family: "Roboto Mono";
   font-style: normal;
   font-weight: bold;
   text-transform: uppercase;
@@ -372,15 +368,14 @@ export default {
 }
 
 .speedtest h1 strong {
-  font-family: 'Roboto Mono';
-  color: #C8C8C8;
+  font-family: "Roboto Mono";
+  color: #c8c8c8;
   text-transform: lowercase;
 }
 
 .speedtest .gauges {
   display: flex;
   gap: 16px;
-
 }
 
 .profilepage .details {

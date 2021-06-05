@@ -5,41 +5,36 @@
   </div>
 </template>
 
-<script>
-import Logo from "@/components/dashboard/Logo";
-export default {
-  name: "LoadingScreen",
-  components: {
-    Logo
-  },
-  data: () => {
-    return {
-      loadingProgress: 0,
-      isVisible: true
-    };
-  },
-  async mounted() {
-    let sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+<script lang="ts" setup>
+import Logo from "@/components/dashboard/Logo.vue";
+import { defineProps, onMounted, ref } from "vue";
 
-    for (let i = 0; i <= 100; i++) {
-      this.loadingProgress = i;
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const props =
+  defineProps<{
+    isLoaded: boolean;
+  }>();
+
+const loadingProgress = ref(0);
+const isVisible = ref(true);
+
+onMounted(async () => {
+  for (let i = 0; i <= 100; i++) {
+    loadingProgress.value = i;
+    await sleep(50);
+    if (loadingProgress.value == 100) {
       await sleep(50);
-      if (this.loadingProgress == 100) {
-        await sleep(50);
-        this.isVisible = false;
-      }
-      if (this.isLoaded) {
-        this.loadingProgress = 100;
-        await sleep(150);
-        this.isVisible = false;
-        break;
-      }
+      isVisible.value = false;
     }
-  },
-  props: {
-    isLoaded: { type: Boolean, required: true }
+    if (props.isLoaded) {
+      loadingProgress.value = 100;
+      await sleep(150);
+      isVisible.value = false;
+      break;
+    }
   }
-};
+});
 </script>
 
 <style scoped>

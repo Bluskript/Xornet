@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <a href="https://www.youtube.com/watch?v=CH7FuFtpG68" target="_blank"><img :src="image" alt=""/></a>
+    <a href="https://www.youtube.com/watch?v=CH7FuFtpG68" target="_blank"><img :src="image" alt="" /></a>
     <div class="content">
       <form v-on:submit.prevent="!isLoading && !isFormValid ? signup() : null">
         <div class="text">
@@ -16,13 +16,15 @@
           <p>Have an account? <router-link :to="{ name: 'login' }">Click here</router-link></p>
         </div>
 
-        <button type="submit" :class="{ disabled: isFormValid || isLoading }">Signup <img v-if="isLoading" :src="require('@/assets/icons/loading.gif')" alt="" /></button>
+        <button type="submit" :class="{ disabled: isFormValid || isLoading }">Signup <img v-if="isLoading" :src="import('@/assets/icons/loading.gif')" alt="" /></button>
       </form>
     </div>
   </div>
 </template>
 
 <script>
+import { api } from "@/modules/api";
+
 export default {
   name: "SignupCard",
   data() {
@@ -31,29 +33,29 @@ export default {
         username: "",
         email: "",
         password: "",
-        repeatPassword: ""
+        repeatPassword: "",
       },
-      isLoading: false
+      isLoading: false,
     };
   },
   computed: {
-    isFormValid: function() {
-      return Object.values(this.form).some(field => field == "");
-    }
+    isFormValid: function () {
+      return Object.values(this.form).some((field) => field == "");
+    },
   },
   props: {
-    image: { type: String, required: true }
+    image: { type: String, required: true },
   },
   methods: {
     async signup() {
       this.isLoading = true;
       console.log(this.form);
-      await this.api.user.signup(this.form);
-      const status = await this.api.user.login(JSON.stringify(this.form));
+      await api.user.signup(this.form);
+      const status = await api.user.login(JSON.stringify(this.form));
       this.isLoading = false;
       if (status == 200) this.$router.push(`/dashboard/profile/${this.form.username}`);
-    }
-  }
+    },
+  },
 };
 </script>
 remove

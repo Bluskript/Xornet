@@ -1,36 +1,34 @@
 <template>
   <header>
     <div class="logo">
-      <img :src="require('@/assets/logos/logoHeader.svg')" alt="Xornet" />
+      <img :src="logoHeader" alt="Xornet" />
     </div>
 
     <div class="buttons">
       <router-link :to="{ name: 'dashboard' }" class="button dashboard">
-        <img :src="require('@/assets/icons/home.png')" alt="" />
+        <mdi:home />
       </router-link>
       <a href="https://github.com/Geoxor/Xornet/releases" target="_blank" class="button">
-        <img :src="require('@/assets/icons/repository.png')" alt="" />
+        <octicon:repo />
       </a>
-      <div class="button" @click="toggleDarkmode()">
-        <img :src="require('@/assets/icons/darkmode.png')" alt="" />
+      <div class="button" @click="isDark = !isDark">
+        <mdi:theme-light-dark />
       </div>
       <div class="button" @click="showDetails = !showDetails" :class="{ enabled: showDetails }">
-        <img :src="require('@/assets/icons/details.png')" alt="" />
+        <clarity:details-solid />
       </div>
       <!-- <div class="button" @click="showRogues = !showRogues" v-if="machines.some(machine => machine.rogue)" :class="{enabled: showRogues}">
-            <img :src="require('@/assets/icons/rogue.svg')" alt="">
+            <img :src="import('@/assets/icons/rogue.svg')" alt="">
         </div> -->
-      <div v-if="thinButtons" class="button" @click="thinButtons = false">
-        <img :src="require('@/assets/icons/thick.png')" alt="" />
-      </div>
-      <div v-if="!thinButtons" class="button" @click="thinButtons = true">
-        <img :src="require('@/assets/icons/thin.png')" alt="" />
+      <div class="button" @click="thinButtons = !thinButtons">
+        <whh:detailsalt v-if="thinButtons" />
+        <whh:details v-else />
       </div>
     </div>
 
     <div class="account">
       <div class="button" @click="logout">
-        <img :src="require('@/assets/icons/logout.png')" alt="" />
+        <mdi:logout-variant />
       </div>
       <router-link :to="{ name: 'profile', params: { username } }">
         <img :src="profile?.profileImage?.url" class="profileImage" alt="profileImage" />
@@ -39,48 +37,43 @@
   </header>
 </template>
 
-<script>
-import { isDark } from "@/services/theme.js";
+<script lang="ts" setup>
+import logoHeader from "@/assets/logos/logoHeader.svg"
+import { isDark } from '@/services/theme'
+import { token, username, thinButtons } from '@/services/localStorage'
+import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
+import { api } from "@/modules/api";
 
-export default {
-  name: "Header",
-  components: {},
-  computed: {
-    username: function() {
-      return localStorage.getItem("username");
-    }
-  },
-  data: () => {
-    return {
-      profile: null
-    };
-  },
-  async created() {
-    this.profile = await this.api.user.fetchMe();
-  },
-  mounted() {},
-  methods: {
-    logout() {
-      function deleteAllCookies() {
-        var cookies = document.cookie.split(";");
+const router = useRouter()
 
-        for (var i = 0; i < cookies.length; i++) {
-          var cookie = cookies[i];
-          var eqPos = cookie.indexOf("=");
-          var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-          document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-        }
-      }
-
-      deleteAllCookies();
-      localStorage.removeItem("token");
-      this.$router.push("/login");
-    },
-    toggleDarkmode() {
-      isDark.value = !isDark.value;
-    }
+const profile = ref<{
+  profileImage?: {
+    url?: string
   }
-};
+} | null>(null)
+
+const showDetails = ref(false)
+
+onMounted(async () => {
+  profile.value = await api.user.fetchMe()
+})
+
+function deleteAllCookies() {
+  const cookies = document.cookie.split(";");
+  for (var i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i];
+    const eqPos = cookie.indexOf("=");
+    const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+  }
+}
+
+const logout = () => {
+  deleteAllCookies()
+  token.value = null
+  router.push("/login")
+}
 </script>
 
 <style scoped>

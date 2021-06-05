@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <a href="https://cdn.discordapp.com/attachments/806300597338767450/833734391883759656/deskslam.mp4" target="_blank"><img :src="image" alt=""/></a>
+    <a href="https://cdn.discordapp.com/attachments/806300597338767450/833734391883759656/deskslam.mp4" target="_blank"><img :src="image" alt="" /></a>
     <div class="content">
       <form v-on:submit.prevent="!isLoading && !isFormValid ? login() : null">
         <div class="text">
@@ -11,7 +11,7 @@
         <div class="fields">
           <input v-model="form.email" class="inputField" type="email" placeholder="Email" />
         </div>
-        <button type="submit" :class="{ disabled: isFormValid || isLoading }">Reset Password <img v-if="isLoading" :src="require('@/assets/icons/loading.gif')" alt="" /></button>
+        <button type="submit" :class="{ disabled: isFormValid || isLoading }">Reset Password <img v-if="isLoading" :src="import('@/assets/icons/loading.gif')" alt="" /></button>
       </form>
     </div>
   </div>
@@ -23,18 +23,18 @@ export default {
   data() {
     return {
       form: {
-        email: ""
+        email: "",
       },
-      isLoading: false
+      isLoading: false,
     };
   },
   computed: {
-    isFormValid: function() {
-      return Object.values(this.form).some(field => field == "");
-    }
+    isFormValid: function () {
+      return Object.values(this.form).some((field) => field == "");
+    },
   },
   props: {
-    image: { type: String, required: true }
-  }
+    image: { type: String, required: true },
+  },
 };
 </script>

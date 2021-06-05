@@ -49,6 +49,7 @@ import Chart from "@/components/dashboard/Chart";
 import Terminal from "@/components/dashboard/Terminal";
 import Header from "@/components/dashboard/Header";
 import Nav from "@/components/dashboard/Nav";
+import { api } from "@/modules/api";
 
 export default {
   name: "Machines",
@@ -60,12 +61,12 @@ export default {
     Header,
     Chart,
     LoadingScreen,
-    ServerList
+    ServerList,
   },
   computed: {
-    selectedMachine: function() {
+    selectedMachine: function () {
       return this.$route.params.machine;
-    }
+    },
   },
   data: () => {
     return {
@@ -75,16 +76,16 @@ export default {
       totalUploadThroughput: null,
       totalDownload: [],
       totalUpload: [],
-      labels: []
+      labels: [],
     };
   },
   mounted() {
-    if (this.$route.query.newMachine) this.api.user.addMachine(this.$route.query.newMachine);
+    if (this.$route.query.newMachine) api.user.addMachine(this.$route.query.newMachine);
 
-    socket.on("machines", machines => {
+    socket.on("machines", (machines) => {
       // console.log(machines);
 
-      Object.values(machines).forEach(machine => (machine.uuid ? this.machines.set(machine.uuid, machine) : null));
+      Object.values(machines).forEach((machine) => (machine.uuid ? this.machines.set(machine.uuid, machine) : null));
 
       let totalRam = 0;
       let totalRamUsed = 0;
@@ -111,7 +112,7 @@ export default {
         this.labels.shift();
       }
     });
-  }
+  },
 };
 </script>
 

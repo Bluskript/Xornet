@@ -5,23 +5,9 @@
   </div>
 </template>
 
-<script>
-import Header from "@/components/home/Header";
-import Main from "@/components/home/Main";
-
-export default {
-  name: "Home",
-  components: {
-    Main,
-    Header
-  },
-  computed: {},
-  data: () => {
-    return {};
-  },
-  created() {},
-  mounted() {}
-};
+<script lang="ts" setup>
+import Header from "@/components/home/Header.vue";
+import Main from "@/components/home/Main.vue";
 </script>
 
 <style scoped>

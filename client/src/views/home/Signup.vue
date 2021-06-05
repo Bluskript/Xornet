@@ -8,14 +8,15 @@
 </template>
 
 <script>
-import Header from "@/components/home/Header";
-import SignupCard from "@/components/misc/SignupCard";
+import Header from "@/components/home/Header.vue";
+import SignupCard from "@/components/misc/SignupCard.vue";
+import { api } from "@/modules/api";
 
 export default {
   name: "Signup",
   components: {
     SignupCard,
-    Header
+    Header,
   },
   data: () => {
     return {
@@ -23,16 +24,16 @@ export default {
         username: null,
         email: null,
         password: null,
-        repeatPassword: null
-      }
+        repeatPassword: null,
+      },
     };
   },
   methods: {
     signup() {
       console.log(this.formData);
-      this.api.user.signup(this.formData);
-    }
-  }
+      api.user.signup(this.formData);
+    },
+  },
 };
 </script>
 

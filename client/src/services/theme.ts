@@ -9,7 +9,7 @@ const darkStyle = {
   "--slyColor": "var(--darkmode-slyColor)",
   "--rogue-red": "var(--darkmode-rogue-red)",
   "--rogue-red-active": "var(--darkmode-rogue-red-active)",
-  "--filter": 1
+  "--filter": 1,
 };
 
 const lightStyle = {
@@ -19,7 +19,7 @@ const lightStyle = {
   "--slyColor": "#414569",
   "--rogue-red": "#ffeef0",
   "--rogue-red-active": "#fdaeb7",
-  "--filter": 0
+  "--filter": 0,
 };
 
 export const isDark = ref(false);
@@ -27,9 +27,9 @@ export const isDark = ref(false);
 watch(isDark, () => {
   const newStyle = isDark.value ? darkStyle : lightStyle;
   Object.entries(newStyle).forEach(([prop, value]) => {
-    document.documentElement.style.setProperty(prop, value);
+    document.documentElement.style.setProperty(prop, `${value}`);
   });
-  localStorage.setItem("dark", isDark.value);
+  isDark.value = !isDark.value;
 });
 
 isDark.value = localStorage.getItem("dark") === "true";
