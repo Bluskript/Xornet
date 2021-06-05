@@ -29,7 +29,6 @@ watch(isDark, () => {
   Object.entries(newStyle).forEach(([prop, value]) => {
     document.documentElement.style.setProperty(prop, `${value}`);
   });
-  isDark.value = !isDark.value;
 });
 
 isDark.value = localStorage.getItem("dark") === "true";
